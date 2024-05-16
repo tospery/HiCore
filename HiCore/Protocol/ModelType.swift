@@ -40,73 +40,42 @@ public extension ModelType {
 
 }
 
-//// MARK: - 模型协议
-//public protocol ModelType: Identifiable, Mappable, Hashable, CustomStringConvertible {
-//    var isValid: Bool { get }
-//    init()
-//}
-//
-//public extension ModelType {
-//
-//    var isValid: Bool { self.id.hashValue != 0 }
-//    var description: String {
-//        self.toJSON().sortedJSONString
-//    }
-//    
-//    func hash(into hasher: inout Hasher) {
-//        hasher.combine(self.id)
-//    }
-//    
-//    static func == (lhs: Self, rhs: Self) -> Bool {
-//        lhs.hashValue == rhs.hashValue
-//    }
-//}
-//
-//public protocol UserType: ModelType {
-//    var username: String? { get }
-//    var password: String? { get }
-//}
-//
-////public protocol ConfigurationType: ModelType {
-////    var localization: Localization { get }
-////}
-//
-//public struct WrappedModel: ModelType {
-//
-//    public var id = 0
-//    public var data: Any?
-//    
-//    public var isValid: Bool { self.data != nil }
-//    
-//    public init() {
-//    }
-//    
-//    public init(_ data: Any? = nil) {
-//        self.data = data
-//    }
-//    
-//    public init?(map: Map) {
-//    }
-//    
-//    public mutating func mapping(map: Map) {
-//        data    <- map["data"]
-//    }
-//    
-//    public static func == (lhs: Self, rhs: Self) -> Bool {
-//        lhs.description == rhs.description
-//    }
-//    
-//    public var description: String {
-//        String.init(describing: self.data)
-//    }
-//
-//}
+public struct WrappedModel: ModelType {
 
-public extension Hashable {
+    public var id = 0
+    public var data: Any?
     
-    static func == (lhs: Self, rhs: Self) -> Bool {
-        lhs.hashValue == rhs.hashValue
+    public var isValid: Bool { self.data != nil }
+    
+    public init() {
     }
+    
+    public init(_ data: Any? = nil) {
+        self.data = data
+    }
+    
+    public init?(map: Map) {
+    }
+    
+    public mutating func mapping(map: Map) {
+        data    <- map["data"]
+    }
+    
+    public static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.description == rhs.description
+    }
+    
+    public var description: String {
+        String.init(describing: self.data)
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case id, data
+    }
+    
+    public func encode(to encoder: Encoder) throws { }
+
+    public init(from decoder: Decoder) throws { }
     
 }
 
@@ -119,4 +88,5 @@ public struct ModelContext: MapContext {
     }
 
 }
+
 

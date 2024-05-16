@@ -17,6 +17,10 @@ public extension Dictionary where Key == String {
 
     func string(for key: String) -> String? { tryString(self[key]) }
     
+    func `enum`<T: RawRepresentable>(for key: String, type: T.Type) -> T? {
+        EnumTypeCastTransform<T>().transformFromJSON(self[key])
+    }
+    
     func data(for key: String) -> Data? {
         guard let value = self[key] else { return nil }
         return value as? Data
@@ -52,7 +56,7 @@ public extension Dictionary where Key == String {
         return value as? [Any]
     }
 
-    func model<Model: Mappable>(for key: String, type: Model.Type) -> Model? {
+    func model<Model: ModelType>(for key: String, type: Model.Type) -> Model? {
         guard let value = self[key] else { return nil }
         if value is Model {
             return value as? Model
@@ -61,28 +65,6 @@ public extension Dictionary where Key == String {
         guard let base64 = string.base64Decoded else { return nil }
         return Model.init(JSONString: base64)
     }
-
-    func `enum`<T: RawRepresentable>(for key: String, type: T.Type) -> T? {
-        EnumTypeCastTransform<T>().transformFromJSON(self[key])
-    }
-
-//    func `enum`<T: RawRepresentable>(for key: String, type: T.Type) -> T? where T.RawValue == String {
-//        guard let value = self[key] else { return nil }
-//        if value is T {
-//            return value as? T
-//        }
-//        guard let string = self.string(for: key) else { return nil }
-//        return T.init(rawValue: string)
-//    }
-//
-//    func `enum`<T: RawRepresentable>(for key: String, type: T.Type) -> T? where T.RawValue == Int {
-//        guard let value = self[key] else { return nil }
-//        if value is T {
-//            return value as? T
-//        }
-//        guard let int = self.int(for: key) else { return nil }
-//        return T.init(rawValue: int)
-//    }
 
     var toStringString: [String: String] {
         var result = [String: String].init()
