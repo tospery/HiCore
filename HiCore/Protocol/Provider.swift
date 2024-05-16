@@ -11,9 +11,6 @@ public protocol ProviderProtocol {
     
 }
 
-open class Provider: ProviderProtocol {
-    
-    public init() {
-    }
-    
+public protocol ServiceProvider {
 }
+
