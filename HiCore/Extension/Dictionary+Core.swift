@@ -62,23 +62,27 @@ public extension Dictionary where Key == String {
         return Model.init(JSONString: base64)
     }
 
-    func `enum`<T: RawRepresentable>(for key: String, type: T.Type) -> T? where T.RawValue == String {
-        guard let value = self[key] else { return nil }
-        if value is T {
-            return value as? T
-        }
-        guard let string = self.string(for: key) else { return nil }
-        return T.init(rawValue: string)
+    func `enum`<T: RawRepresentable>(for key: String, type: T.Type) -> T? {
+        EnumTypeCastTransform<T>().transformFromJSON(self[key])
     }
 
-    func `enum`<T: RawRepresentable>(for key: String, type: T.Type) -> T? where T.RawValue == Int {
-        guard let value = self[key] else { return nil }
-        if value is T {
-            return value as? T
-        }
-        guard let int = self.int(for: key) else { return nil }
-        return T.init(rawValue: int)
-    }
+//    func `enum`<T: RawRepresentable>(for key: String, type: T.Type) -> T? where T.RawValue == String {
+//        guard let value = self[key] else { return nil }
+//        if value is T {
+//            return value as? T
+//        }
+//        guard let string = self.string(for: key) else { return nil }
+//        return T.init(rawValue: string)
+//    }
+//
+//    func `enum`<T: RawRepresentable>(for key: String, type: T.Type) -> T? where T.RawValue == Int {
+//        guard let value = self[key] else { return nil }
+//        if value is T {
+//            return value as? T
+//        }
+//        guard let int = self.int(for: key) else { return nil }
+//        return T.init(rawValue: int)
+//    }
 
     var toStringString: [String: String] {
         var result = [String: String].init()
