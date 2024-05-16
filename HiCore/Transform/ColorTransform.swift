@@ -1,35 +1,35 @@
+////
+////  ColorTransform.swift
+////  HiIOS
+////
+////  Created by 杨建祥 on 2022/7/18.
+////
 //
-//  ColorTransform.swift
-//  HiIOS
+//import UIKit
+//import ObjectMapper
+//import SwifterSwift
 //
-//  Created by 杨建祥 on 2022/7/18.
+//public class ColorTransform: TransformType {
 //
-
-import UIKit
-import ObjectMapper
-import SwifterSwift
-
-public class ColorTransform: TransformType {
-
-    public typealias Object = UIColor
-    public typealias JSON = Any
-    
-    public init() {}
-    
-    public func transformFromJSON(_ value: Any?) -> UIColor? {
-        if let int = value as? Int,
-           let color =  UIColor.init(hex: int) {
-            return color
-        }
-        if let string = value as? String,
-           let color = UIColor.init(hexString: string) {
-            return color
-        }
-        return nil
-    }
-
-    public func transformToJSON(_ value: UIColor?) -> Any? {
-        value?.hexString
-    }
-    
-}
+//    public typealias Object = UIColor
+//    public typealias JSON = Any
+//    
+//    public init() {}
+//    
+//    public func transformFromJSON(_ value: Any?) -> UIColor? {
+//        if let int = value as? Int,
+//           let color =  UIColor.init(hex: int) {
+//            return color
+//        }
+//        if let string = value as? String,
+//           let color = UIColor.init(hexString: string) {
+//            return color
+//        }
+//        return nil
+//    }
+//
+//    public func transformToJSON(_ value: UIColor?) -> Any? {
+//        value?.hexString
+//    }
+//    
+//}

@@ -38,7 +38,6 @@ public extension Int {
         }
         return nil
     }
-    
 }
 
 extension UInt32 {

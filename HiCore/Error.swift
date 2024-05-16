@@ -23,6 +23,7 @@ public struct ErrorCode {
     public static let asError                   = -20006
     public static let kfError                   = -20007
     public static let appError                  = -30000
+    public static let mapping                   = -40000
 }
 
 public enum HiError: Error {
@@ -249,4 +250,18 @@ extension Error {
         return .server(0, self.localizedDescription, nil)
     }
 
+}
+
+public enum MappingError: Error {
+    case emptyData
+    case invalidJSON(message: String)
+    case unknownType
+}
+extension MappingError: HiErrorCompatible {
+    public var hiError: HiError {
+        switch self {
+        case .unknownType: return .unknown
+        default: return .dataInvalid
+        }
+    }
 }

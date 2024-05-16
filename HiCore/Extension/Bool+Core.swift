@@ -7,10 +7,22 @@
 
 import Foundation
 
-public protocol BooleanType {
-    var boolValue: Bool { get }
-}
+public extension Bool {
+    
+    var double: Double {
+        (self ? 1.0 : 0.0)
+    }
+    
+//    static func safeFrom(_ string: String, file: String = #file, function: String = #function, line: UInt = #line) -> Bool? {
+//        if string.isNil {
+//            return nil
+//        }
+//        
+//        if let bool = string.asBool {
+//            return bool
+//        } else {
+//            return nil
+//        }
+//    }
 
-extension Bool: BooleanType {
-    public var boolValue: Bool { return self }
 }

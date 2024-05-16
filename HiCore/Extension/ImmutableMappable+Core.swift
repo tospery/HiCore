@@ -9,7 +9,6 @@ import Foundation
 import ObjectMapper
 
 // ******************************* MARK: - From data
-
 public extension ImmutableMappable {
     
     /// Creates model from JSON string.

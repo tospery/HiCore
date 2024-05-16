@@ -7,11 +7,11 @@
 
 import Foundation
 
-public protocol ProviderType {
+public protocol ProviderProtocol {
     
 }
 
-open class Provider: ProviderType {
+open class Provider: ProviderProtocol {
     
     public init() {
     }

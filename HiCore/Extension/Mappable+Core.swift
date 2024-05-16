@@ -9,7 +9,6 @@ import Foundation
 import ObjectMapper
 
 // ******************************* MARK: - From data
-
 public extension Mappable {
     
     /// Creates model from JSON string.
@@ -60,7 +59,6 @@ public extension Mappable {
 }
 
 // ******************************* MARK: - From string
-
 public extension Mappable {
     
     /// Creates model from JSON string.

@@ -15,9 +15,8 @@ public class EnumTypeCastTransform<T: RawRepresentable>: TransformType {
     public init() {}
     
     open func transformFromJSON(_ value: Any?) -> T? {
-        if value == nil {
-            return nil
-        } else if let value = value as? T.RawValue {
+        guard let value = value else { return nil }
+        if let value = value as? T.RawValue {
             return T(rawValue: value)
         } else if T.RawValue.self == Int.self {
             let rawValue = IntTransform.shared.transformFromJSON(value) as? T.RawValue
@@ -31,10 +30,8 @@ public class EnumTypeCastTransform<T: RawRepresentable>: TransformType {
         } else if T.RawValue.self == String.self {
             let rawValue = StringTransform.shared.transformFromJSON(value) as? T.RawValue
             return rawValue.flatMap(T.init(rawValue:))
-        } else {
-            print("Can not cast value of type \(type(of: value!)) to type \(T.RawValue.self): \ndata = \(["value": value])")
-            return nil
         }
+        return nil
     }
     
     open func transformToJSON(_ value: T?) -> T.RawValue? {

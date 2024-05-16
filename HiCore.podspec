@@ -1,9 +1,9 @@
 Pod::Spec.new do |s|
   s.name             = 'HiCore'
-  s.version          = '1.0.1'
-  s.summary          = 'Core function.'
+  s.version          = '1.0.2'
+  s.summary          = 'Core module.'
   s.description      = <<-DESC
-						Core function using Swift.
+						Core module using Swift.
                        DESC
   s.homepage         = 'https://github.com/tospery/HiCore'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
@@ -16,10 +16,9 @@ Pod::Spec.new do |s|
   s.frameworks = 'Foundation'
   
   s.source_files = 'HiCore/**/*'
-  s.dependency 'FCUUID', '1.3.1'
-  s.dependency 'DeviceKit', '5.2.3'
-  s.dependency 'SwiftyBeaver', '1.9.5'
-  s.dependency 'ObjectMapper', '4.4.2'
-  s.dependency 'SwifterSwift', '6.0.0'
+  s.dependency 'SwiftyBeaver', '~> 1.0'
+  s.dependency 'ObjectMapper', '~> 4.0'
+  s.dependency 'SwifterSwift/SwiftStdlib', '~> 6.0'
+  s.dependency 'SwifterSwift/Foundation', '~> 6.0'
   
 end

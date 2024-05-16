@@ -7,23 +7,15 @@
 
 import Foundation
 import SwifterSwift
+import ObjectMapper
 
 public extension Dictionary where Key == String {
 
-    func bool(for key: String) -> Bool? {
-        guard let value = self[key] else { return nil }
-        return (value as? Bool) ?? (value as? String)?.bool ?? (value as? Int)?.bool
-    }
+    func bool(for key: String) -> Bool? { tryBool(self[key]) }
 
-    func int(for key: String) -> Int? {
-        guard let value = self[key] else { return nil }
-        return (value as? Int) ?? (value as? String)?.int
-    }
+    func int(for key: String) -> Int? { tryInt(self[key]) }
 
-    func string(for key: String) -> String? {
-        guard let value = self[key] else { return nil }
-        return (value as? String) ?? (value as? Int)?.string
-    }
+    func string(for key: String) -> String? { tryString(self[key]) }
     
     func data(for key: String) -> Data? {
         guard let value = self[key] else { return nil }
@@ -60,7 +52,7 @@ public extension Dictionary where Key == String {
         return value as? [Any]
     }
 
-    func model<Model: ModelType>(for key: String, type: Model.Type) -> Model? {
+    func model<Model: Mappable>(for key: String, type: Model.Type) -> Model? {
         guard let value = self[key] else { return nil }
         if value is Model {
             return value as? Model
