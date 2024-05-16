@@ -113,6 +113,10 @@ public func compareAny(_ left: Any?, _ right: Any?) -> Bool {
        let rightHashable = right as? any Hashable {
         return leftHashable.hashValue == rightHashable.hashValue
     }
+    if let leftNSObject = left as? NSObject,
+       let rightNSObject = right as? NSObject {
+        return leftNSObject.isEqual(rightNSObject)
+    }
     let leftString = String.init(describing: left!)
     let rightString = String.init(describing: right!)
     return leftString == rightString
