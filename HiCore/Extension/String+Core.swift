@@ -147,6 +147,14 @@ public extension String {
     
     var fileExt: String? { self.url?.pathExtension }
 
+    var apiString: String {
+        (try? NSRegularExpression.init(pattern: "(\\{[^\\}]+\\})"))?.stringByReplacingMatches(
+            in: self,
+            range: .init(location: 0, length: self.count),
+            withTemplate: ""
+        ) ?? self
+    }
+    
     // MARK: - Methods
     func nsRange(from range: Range<String.Index>) -> NSRange {
         .init(range, in: self)
