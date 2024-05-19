@@ -8,6 +8,7 @@
 import Foundation
 import SwifterSwift
 import ObjectMapper
+import HiDomain
 
 public extension Dictionary where Key == String {
 
@@ -18,7 +19,7 @@ public extension Dictionary where Key == String {
     func string(for key: String) -> String? { tryString(self[key]) }
     
     func `enum`<T: RawRepresentable>(for key: String, type: T.Type) -> T? {
-        EnumTypeCastTransform<T>().transformFromJSON(self[key])
+        tryEnum(value: self[key], type: T.self)
     }
     
     func data(for key: String) -> Data? {

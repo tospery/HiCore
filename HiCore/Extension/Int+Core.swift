@@ -9,10 +9,6 @@ import Foundation
 
 public extension Int {
     
-    var bool: Bool {
-        return self != 0
-    }
-    
     var kilobytesText: String {
         (self * 1024).bytesText
     }

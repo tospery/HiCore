@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'HiCore'
-  s.version          = '1.0.3'
+  s.version          = '1.0.4'
   s.summary          = 'Core module.'
   s.description      = <<-DESC
 						Core module using Swift.
@@ -13,12 +13,14 @@ Pod::Spec.new do |s|
   s.requires_arc = true
   s.swift_version = '5.3'
   s.ios.deployment_target = '13.0'
-  s.frameworks = 'Foundation'
+  s.frameworks = 'Foundation', 'CoreGraphics', 'UIKit'
   
   s.source_files = 'HiCore/**/*'
+  s.dependency 'HiDomain', '~> 1.0'
+  s.dependency 'FCUUID', '~> 1.0'
+  s.dependency 'DeviceKit', '~> 5.0'
   s.dependency 'SwiftyBeaver', '~> 1.0'
-  s.dependency 'ObjectMapper', '~> 4.0'
-  s.dependency 'SwifterSwift/SwiftStdlib', '~> 6.0'
-  s.dependency 'SwifterSwift/Foundation', '~> 6.0'
+  s.dependency 'SwifterSwift/UIKit', '~> 6.0'
+  s.dependency 'SwifterSwift/CoreGraphics', '~> 6.0'
   
 end

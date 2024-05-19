@@ -8,6 +8,7 @@
 import Foundation
 import ObjectMapper
 import SwifterSwift
+import HiDomain
 
 public protocol ModelType: Identifiable, Codable, Hashable, CustomStringConvertible, Mappable {
     var isValid: Bool { get }

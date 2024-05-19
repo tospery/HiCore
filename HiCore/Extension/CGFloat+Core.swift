@@ -17,11 +17,11 @@ public extension CGFloat {
         self.isNaN ? 0 : self
     }
 
-    var ceil: CGFloat {
+    var ceilRemoveMin: CGFloat {
         Foundation.ceil(self.removeMin)
     }
     
-    var floor: CGFloat {
+    var floorRemoveMin: CGFloat {
         Foundation.floor(self.removeMin)
     }
     
