@@ -22,7 +22,7 @@ public extension String {
             self = self.replacingOccurrences(of: "\(displayName).", with: "")
         }
         self = self.replacingOccurrences(of: UIApplication.shared.bundleName + ".", with: "")
-        self = self.replacingOccurrences(of: "HiUtils.", with: "")
+        self = self.replacingOccurrences(of: "HiCore.", with: "")
     }
     
     var hashColor: UIColor {
