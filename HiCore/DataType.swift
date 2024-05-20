@@ -31,12 +31,7 @@ public protocol ImageSource {
 extension URL: ImageSource {}
 extension UIImage: ImageSource {}
 
-public protocol ProviderProtocol {
-    
-}
-
-public protocol ServiceProvider {
-}
+public protocol ProviderProtocol { }
 
 public protocol Textable {
     func toString(_ value: Any?) -> String?

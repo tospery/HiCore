@@ -26,8 +26,6 @@ public extension String {
         return url
     }
     
-    var isNotEmpty: Bool { !isEmpty }
-    
     var color: UIColor? {
         return UIColor(hexString: self)
     }
