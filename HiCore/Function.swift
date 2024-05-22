@@ -41,11 +41,6 @@ public func compareVersion(_ version1: String, _ version2: String, amount: Int =
 }
 
 public func compareAny(_ left: Any?, _ right: Any?) -> Bool {
-    let leftType = type(of: left)
-    let rightType = type(of: right)
-    if leftType != rightType {
-        return false
-    }
     if left == nil && right == nil {
         return true
     }
@@ -54,55 +49,138 @@ public func compareAny(_ left: Any?, _ right: Any?) -> Bool {
     }
     if left != nil && right == nil {
         return false
+    }
+    if type(of: left) != type(of: right) {
+        return false
+    }
+    if let leftBool = left as? Bool,
+       let rightBool = right as? Bool {
+        return leftBool == rightBool
+    }
+    if let leftInt = left as? Int,
+       let rightInt = right as? Int {
+        return leftInt == rightInt
+    }
+    if let leftDouble = left as? Double,
+       let rightDouble = right as? Double {
+        return leftDouble == rightDouble
+    }
+    if let leftString = left as? String,
+       let rightString = right as? String {
+        return leftString == rightString
+    }
+    if let leftArray = left as? [Any],
+        let rightArray = right as? [Any] {
+        if leftArray.count != rightArray.count {
+            return false
+        }
+        for (leftElement, rightElement) in zip(leftArray, rightArray) {
+            let result = compareAny(leftElement, rightElement)
+            if result == true {
+                continue
+            }
+            return false
+        }
+        return true
+    }
+    if let leftDict = left as? [String: Any],
+        let rightDict = right as? [String: Any] {
+        if leftDict.count != rightDict.count {
+            return false
+        }
+        for (leftElement, rightElement) in zip(leftDict, rightDict) {
+            let result = compareAny(leftElement, rightElement)
+            if result == true {
+                continue
+            }
+            return false
+        }
+        return true
+    }
+    if let leftEquatable = toAnyEquatable(left),
+       let rightEquatable = toAnyEquatable(right) {
+        return leftEquatable.isEqual(to: rightEquatable)
     }
     if let leftHashable = left as? (any Hashable),
        let rightHashable = right as? any Hashable {
         return leftHashable.hashValue == rightHashable.hashValue
     }
+    if let leftConvertible = left as? CustomStringConvertible,
+       let rightConvertible = right as? CustomStringConvertible {
+        return leftConvertible.description == rightConvertible.description
+    }
     if let leftNSObject = left as? NSObject,
        let rightNSObject = right as? NSObject {
         return leftNSObject.isEqual(rightNSObject)
     }
-    let leftString = String.init(describing: left!)
-    let rightString = String.init(describing: right!)
-    return leftString == rightString
-}
-
-
-public func compareModels(_ left: [[any Hashable]]?, _ right: [[any Hashable]]?) -> Bool {
-    if left == nil && right == nil {
-        return true
-    }
-    if left == nil && right != nil {
-        return false
-    }
-    if left != nil && right == nil {
-        return false
-    }
-    if left!.count != right!.count {
-        return false
-    }
-    for (index1, array1) in left!.enumerated() {
-        let array2 = right![index1]
-        if array1.count != array2.count {
-            return false
-        }
-        for (index2, model2) in array2.enumerated() {
-            let model1 = array1[index2]
-            // if model1 != model2 {
-            if model1.hashValue != model2.hashValue {
-                return false
-            } else {
-                let leftString = String.init(describing: model1)
-                let rightString = String.init(describing: model2)
-                if leftString != rightString {
-                    return false
-                }
-            }
-        }
-    }
+//    let leftString = String.init(describing: left!)
+//    let rightString = String.init(describing: right!)
+//    return leftString == rightString
     return true
 }
+
+private protocol AnyEquatable {
+    func isEqual(to other: AnyEquatable) -> Bool
+}
+
+private struct AnyEquatableBox: AnyEquatable {
+    private let base: Any
+    private let _isEqual: (AnyEquatable) -> Bool
+
+    init<T: Equatable>(_ base: T) {
+        self.base = base
+        self._isEqual = { other in
+            guard let otherValue = other as? AnyEquatableBox, let otherBase = otherValue.base as? T else { return false }
+            return base == otherBase
+        }
+    }
+
+    func isEqual(to other: AnyEquatable) -> Bool {
+        return _isEqual(other)
+    }
+}
+
+private func toAnyEquatable(_ value: Any) -> AnyEquatable? {
+    if let equatableValue = value as? any Equatable {
+        return AnyEquatableBox(equatableValue)
+    }
+    return nil
+}
+
+//public func compareModels(_ left: [[any Hashable]]?, _ right: [[any Hashable]]?) -> Bool {
+//    if left == nil && right == nil {
+//        return true
+//    }
+//    if left == nil && right != nil {
+//        return false
+//    }
+//    if left != nil && right == nil {
+//        return false
+//    }
+//    if left!.count != right!.count {
+//        return false
+//    }
+//    for (index1, array1) in left!.enumerated() {
+//        let array2 = right![index1]
+//        if array1.count != array2.count {
+//            return false
+//        }
+//        for (index2, model2) in array2.enumerated() {
+//            let model1 = array1[index2]
+//            // if model1 != model2 {
+//            if model1.hashValue != model2.hashValue {
+//                return false
+//            } else {
+//                let leftString = String.init(describing: model1)
+//                let rightString = String.init(describing: model2)
+//                if leftString != rightString {
+//                    return false
+//                }
+//            }
+//        }
+//    }
+//    return true
+//}
 
 public func compareImage(_ left: ImageSource?, _ right: ImageSource?) -> Bool {
     if let lImage = left as? UIImage,

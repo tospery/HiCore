@@ -24,6 +24,7 @@ public struct ErrorCode {
     public static let kfError                   = -20007
     public static let appError                  = -30000
     public static let mapping                   = -40000
+    public static let netError                  = -50000
 }
 
 public enum HiError: Error {
