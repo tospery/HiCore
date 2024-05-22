@@ -120,12 +120,19 @@ public func compareAny(_ left: Any?, _ right: Any?) -> Bool {
 }
 
 private protocol AnyEquatable {
-    func isEqual(to other: AnyEquatable) -> Bool
+    func isEqual(to other: AnyEquatable?) -> Bool
+}
+
+private func toAnyEquatable(_ value: Any) -> AnyEquatable? {
+    if let equatableValue = value as? any Equatable {
+        return AnyEquatableBox(equatableValue)
+    }
+    return nil
 }
 
 private struct AnyEquatableBox: AnyEquatable {
     private let base: Any
-    private let _isEqual: (AnyEquatable) -> Bool
+    private let _isEqual: (AnyEquatable?) -> Bool
 
     init<T: Equatable>(_ base: T) {
         self.base = base
@@ -135,16 +142,9 @@ private struct AnyEquatableBox: AnyEquatable {
         }
     }
 
-    func isEqual(to other: AnyEquatable) -> Bool {
+    func isEqual(to other: AnyEquatable?) -> Bool {
         return _isEqual(other)
     }
-}
-
-private func toAnyEquatable(_ value: Any) -> AnyEquatable? {
-    if let equatableValue = value as? any Equatable {
-        return AnyEquatableBox(equatableValue)
-    }
-    return nil
 }
 
 //public func compareModels(_ left: [[any Hashable]]?, _ right: [[any Hashable]]?) -> Bool {
