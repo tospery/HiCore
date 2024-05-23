@@ -7,6 +7,17 @@
 
 import Foundation
 
+var appLanguageBundle: Bundle?
+public var appLanguageCodes: [String]? {
+    didSet {
+        if let code = appLanguageCodes?.first,
+           let path = Bundle.main.path(forResource: code, ofType: "lproj"),
+           let bundle = Bundle(path: path) {
+            appLanguageBundle = bundle
+        }
+    }
+}
+
 //        NSURLErrorTimedOut(-1001): 请求超时
 //        NSURLErrorCannotConnectToHost(-1004): 找不到服务
 //        NSURLErrorDataNotAllowed(-1020): 网络不可用
@@ -67,35 +78,35 @@ extension HiError: LocalizedError {
     public var failureReason: String? {
         switch self {
         case .none:
-            return NSLocalizedString("Error.None.Title", value: "", comment: "")
+            return "Error.None.Title".localizedString
         case .unknown:
-            return NSLocalizedString("Error.Unknown.Title", value: "", comment: "")
+            return "Error.Unknown.Title".localizedString
         case .timeout:
-            return NSLocalizedString("Error.Timeout.Title", value: "", comment: "")
+            return "Error.Timeout.Title".localizedString
         case .navigation:
-            return NSLocalizedString("Error.Navigation.Title", value: "", comment: "")
+            return "Error.Navigation.Title".localizedString
         case .dataInvalid:
-            return NSLocalizedString("Error.DataInvalid.Title", value: "", comment: "")
+            return "Error.DataInvalid.Title".localizedString
         case .listIsEmpty:
-            return NSLocalizedString("Error.ListIsEmpty.Title", value: "", comment: "")
+            return "Error.ListIsEmpty.Title".localizedString
         case .networkNotConnected:
-            return NSLocalizedString("Error.Network.NotConnected.Title", value: "", comment: "")
+            return "Error.Network.NotConnected.Title".localizedString
         case .networkNotReachable:
-            return NSLocalizedString("Error.Network.NotReachable.Title", value: "", comment: "")
+            return "Error.Network.NotReachable.Title".localizedString
         case .userNotLoginedIn:
-            return NSLocalizedString("Error.User.NotLoginedIn.Title", value: "", comment: "")
+            return "Error.User.NotLoginedIn.Title".localizedString
         case .userLoginExpired:
-            return NSLocalizedString("Error.User.LoginExpired.Title", value: "", comment: "")
+            return "Error.User.LoginExpired.Title".localizedString
         case let .server(code, _, _):
-            var result = NSLocalizedString("Error.Server.Title\(code)", value: "", comment: "")
+            var result = "Error.Server.Title\(code)".localizedString
             if result.starts(with: "Error.Server.Title") {
-                result = NSLocalizedString("Error.Server.Title", value: "", comment: "")
+                result = "Error.Server.Title".localizedString
             }
             return result
         case let .app(code, _, _):
-            var result = NSLocalizedString("Error.App.Title\(code)", value: "", comment: "")
+            var result = "Error.App.Title\(code)".localizedString
             if result.starts(with: "Error.App.Title") {
-                result = NSLocalizedString("Error.App.Title", value: "", comment: "")
+                result = "Error.App.Title".localizedString
             }
             return result
         }
@@ -104,35 +115,35 @@ extension HiError: LocalizedError {
     public var errorDescription: String? {
         switch self {
         case .none:
-            return NSLocalizedString("Error.None.Message", value: "", comment: "")
+            return "Error.None.Message".localizedString
         case .unknown:
-            return NSLocalizedString("Error.Unknown.Message", value: "", comment: "")
+            return "Error.Unknown.Message".localizedString
         case .timeout:
-            return NSLocalizedString("Error.Timeout.Message", value: "", comment: "")
+            return "Error.Timeout.Message".localizedString
         case .navigation:
-            return NSLocalizedString("Error.Navigation.Message", value: "", comment: "")
+            return "Error.Navigation.Message".localizedString
         case .dataInvalid:
-            return NSLocalizedString("Error.DataInvalid.Message", value: "", comment: "")
+            return "Error.DataInvalid.Message".localizedString
         case .listIsEmpty:
-            return NSLocalizedString("Error.ListIsEmpty.Message", value: "", comment: "")
+            return "Error.ListIsEmpty.Message".localizedString
         case .networkNotConnected:
-            return NSLocalizedString("Error.Network.NotConnected.Message", value: "", comment: "")
+            return "Error.Network.NotConnected.Message".localizedString
         case .networkNotReachable:
-            return NSLocalizedString("Error.Network.NotReachable.Message", value: "", comment: "")
+            return "Error.Network.NotReachable.Message".localizedString
         case .userNotLoginedIn:
-            return NSLocalizedString("Error.User.NotLoginedIn.Message", value: "", comment: "")
+            return "Error.User.NotLoginedIn.Message".localizedString
         case .userLoginExpired:
-            return NSLocalizedString("Error.User.LoginExpired.Message", value: "", comment: "")
+            return "Error.User.LoginExpired.Message".localizedString
         case let .server(code, message, _):
-            var result = message ?? NSLocalizedString("Error.Server.Message\(code)", value: "", comment: "")
+            var result = message ?? "Error.Server.Message\(code)".localizedString
             if result.starts(with: "Error.Server.Message") {
-                result = NSLocalizedString("Error.Server.Message", value: "", comment: "")
+                result = "Error.Server.Message".localizedString
             }
             return result
         case let .app(code, message, _):
-            var result = message ?? NSLocalizedString("Error.App.Message\(code)", value: "", comment: "")
+            var result = message ?? "Error.App.Message\(code)".localizedString
             if result.starts(with: "Error.App.Message") {
-                result = NSLocalizedString("Error.App.Message", value: "", comment: "")
+                result = "Error.App.Message".localizedString
             }
             return result
         }
@@ -142,7 +153,7 @@ extension HiError: LocalizedError {
         var suggestion: String?
         switch self {
         case let .app(code, _, _):
-            suggestion = NSLocalizedString("Error.App.Suggestion\(code)", value: "", comment: "")
+            suggestion = "Error.App.Suggestion\(code)".localizedString
         default:
             break
         }
