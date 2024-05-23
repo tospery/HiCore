@@ -53,6 +53,9 @@ public func compareAny(_ left: Any?, _ right: Any?) -> Bool {
     if type(of: left) != type(of: right) {
         return false
     }
+    if Mirror(reflecting: left).displayStyle != Mirror(reflecting: right).displayStyle {
+        return false
+    }
     if let leftBool = left as? Bool,
        let rightBool = right as? Bool {
         return leftBool == rightBool
@@ -69,6 +72,7 @@ public func compareAny(_ left: Any?, _ right: Any?) -> Bool {
        let rightString = right as? String {
         return leftString == rightString
     }
+    
     if let leftArray = left as? [Any],
         let rightArray = right as? [Any] {
         if leftArray.count != rightArray.count {
@@ -113,10 +117,9 @@ public func compareAny(_ left: Any?, _ right: Any?) -> Bool {
        let rightNSObject = right as? NSObject {
         return leftNSObject.isEqual(rightNSObject)
     }
-//    let leftString = String.init(describing: left!)
-//    let rightString = String.init(describing: right!)
-//    return leftString == rightString
-    return true
+    let leftString = String.init(describing: left!)
+    let rightString = String.init(describing: right!)
+    return leftString == rightString
 }
 
 private protocol AnyEquatable {
