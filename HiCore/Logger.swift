@@ -82,6 +82,8 @@ extension Logger.Module {
     public static var hiIOS: Logger.Module { "HiIOS" }
     public static var library: Logger.Module { "library" }
     public static var restful: Logger.Module { "restful" }
+    public static var network: Logger.Module { "network" }
+    public static var database: Logger.Module { "database" }
     public static var statistic: Logger.Module { "statistic" }
     
 }
