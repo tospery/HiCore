@@ -13,6 +13,12 @@ public extension String {
     // MARK: - Properties
     var localizedString: String { NSLocalizedString(self, bundle: appLanguageBundle ?? .main, comment: "") }
     
+    
+    var capitalizedFirstCharacter: String {
+        guard let first = first else { return self }
+        return String(first).uppercased() + dropFirst()
+    }
+    
     var forcedURL: URL? {
         var url = URL.init(string: self)
         if url == nil {
