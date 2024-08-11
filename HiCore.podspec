@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   s.frameworks = 'Foundation', 'CoreGraphics', 'UIKit'
   
   s.source_files = 'HiCore/**/*'
-  s.dependency 'HiDomain', '~> 1.0'
+  s.dependency 'HiBase', '~> 1.0'
   s.dependency 'FCUUID', '~> 1.0'
   s.dependency 'DeviceKit', '~> 5.0'
   s.dependency 'SwiftyBeaver', '~> 1.0'
