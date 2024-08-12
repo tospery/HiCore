@@ -73,7 +73,7 @@ public var isRegularScreen: Bool {
 
 /// 是否Retina
 public var isRetinaScreen: Bool { UIScreen.main.scale >= 2.0 }
-/// HiIOS自定义的iPhone屏幕大小分类，以设备宽度为基准。
+/// 自定义的iPhone屏幕大小分类，以设备宽度为基准。
 public var isSmallScreen: Bool { deviceWidth <= 320 }
 public var isMiddleScreen: Bool { deviceWidth > 320 && deviceWidth < 414 }
 public var isLargeScreen: Bool { deviceWidth >= 414 }

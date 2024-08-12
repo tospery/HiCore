@@ -1,6 +1,6 @@
 //
 //  Dictionary+Core.swift
-//  HiIOS
+//  HiCore
 //
 //  Created by 杨建祥 on 2022/7/18.
 //
@@ -8,7 +8,7 @@
 import Foundation
 import SwifterSwift
 import ObjectMapper
-import HiDomain
+import HiBase
 
 public extension Dictionary where Key == String {
 

@@ -1,6 +1,6 @@
 //
 //  URL+Core.swift
-//  HiIOS
+//  HiCore
 //
 //  Created by 杨建祥 on 2023/1/25.
 //
