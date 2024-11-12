@@ -40,6 +40,7 @@ public struct ErrorCode {
 
 public enum HiError: Error {
     case none
+    case cancel
     case unknown
     case timeout
     case navigation
@@ -53,20 +54,25 @@ public enum HiError: Error {
     case app(Int, String?, [String: Any]?)
 }
 
+extension HiError: Identifiable {
+    public var id: String { localizedDescription }
+}
+
 extension HiError: CustomNSError {
     public static let domain = Bundle.main.bundleIdentifier ?? ""
     public var errorCode: Int {
         switch self {
         case .none: return 0
-        case .unknown: return 1
-        case .timeout: return 2
-        case .navigation: return 3
-        case .dataInvalid: return 4
-        case .listIsEmpty: return 5
-        case .networkNotConnected: return 6
-        case .networkNotReachable: return 7
-        case .userNotLoginedIn: return 8
-        case .userLoginExpired: return 9
+        case .cancel: return 1
+        case .unknown: return 2
+        case .timeout: return 3
+        case .navigation: return 4
+        case .dataInvalid: return 5
+        case .listIsEmpty: return 6
+        case .networkNotConnected: return 7
+        case .networkNotReachable: return 8
+        case .userNotLoginedIn: return 9
+        case .userLoginExpired: return 10
         case let .server(code, _, _): return code
         case let .app(code, _, _): return code
         }
@@ -79,6 +85,8 @@ extension HiError: LocalizedError {
         switch self {
         case .none:
             return "Error.None.Title".localizedString
+        case .cancel:
+            return "Error.Cancel.Title".localizedString
         case .unknown:
             return "Error.Unknown.Title".localizedString
         case .timeout:
@@ -116,6 +124,8 @@ extension HiError: LocalizedError {
         switch self {
         case .none:
             return "Error.None.Message".localizedString
+        case .cancel:
+            return "Error.Cancel.Message".localizedString
         case .unknown:
             return "Error.Unknown.Message".localizedString
         case .timeout:
@@ -190,6 +200,7 @@ extension HiError: CustomStringConvertible {
     public var description: String {
         switch self {
         case .none: return "HiError.none"
+        case .cancel: return "HiError.cancel"
         case .unknown: return "HiError.unknown"
         case .timeout: return "HiError.timeout"
         case .navigation: return "HiError.navigation"

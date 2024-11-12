@@ -158,6 +158,16 @@ public extension String {
         return value
     }
     
+    var isValidToastUrl: Bool {
+        guard let url = self.url else { return false }
+        return ["toast"].contains((url.host() ?? "").lowercased())
+    }
+    
+    var isValidAlertUrl: Bool {
+        guard let url = self.url else { return false }
+        return ["alert"].contains((url.host() ?? "").lowercased())
+    }
+    
     var isValidPDFUrl: Bool {
         guard let url = self.url else { return false }
         return [
