@@ -11,8 +11,8 @@ import SwifterSwift
 public extension String {
     
     // MARK: - Properties
-    var localizedString: String { NSLocalizedString(self, bundle: appLanguageBundle ?? .main, comment: "") }
-    
+    // var localizedString: String { NSLocalizedString(self, bundle: appLanguageBundle ?? .main, comment: "") }
+    var localizedString: String { NSLocalizedString(self, comment: "") }
     
     var capitalizedFirstCharacter: String {
         guard let first = first else { return self }
