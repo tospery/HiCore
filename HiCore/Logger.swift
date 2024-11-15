@@ -62,7 +62,7 @@ public struct Logger {
         } else {
             logType.custom(
                 level: .init(rawValue: level.rawValue) ?? .debug,
-                message: "【\(module)】\(message())",
+                message: "\(Thread.current)【\(module)】\(message())",
                 file: file,
                 function: function,
                 line: line,
