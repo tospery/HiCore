@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 import SwifterSwift
 
 public extension String {
@@ -13,6 +14,8 @@ public extension String {
     // MARK: - Properties
     // var localizedString: String { NSLocalizedString(self, bundle: appLanguageBundle ?? .main, comment: "") }
     var localizedString: String { NSLocalizedString(self, comment: "") }
+    
+    var localizedStringKey: LocalizedStringKey { .init(self) }
     
     var capitalizedFirstCharacter: String {
         guard let first = first else { return self }
