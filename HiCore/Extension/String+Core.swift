@@ -8,6 +8,7 @@
 import UIKit
 import SwiftUI
 import SwifterSwift
+import HiBase
 
 public extension String {
     
@@ -16,6 +17,9 @@ public extension String {
     var localizedString: String { NSLocalizedString(self, comment: "") }
     
     var localizedStringKey: LocalizedStringKey { .init(self) }
+    
+    var chineseLocalizedString: String { NSLocalizedString(self, bundle: Bundle.zhBundle ?? .main, comment: "") }
+    var englishLocalizedString: String { NSLocalizedString(self, bundle: Bundle.enBundle ?? .main, comment: "") }
     
     var capitalizedFirstCharacter: String {
         guard let first = first else { return self }
