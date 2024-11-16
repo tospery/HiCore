@@ -175,6 +175,16 @@ public extension String {
         return ["alert"].contains((url.host() ?? "").lowercased())
     }
     
+    var isValidSheetUrl: Bool {
+        guard let url = self.url else { return false }
+        return ["sheet"].contains((url.host() ?? "").lowercased())
+    }
+    
+    var isValidLoginUrl: Bool {
+        guard let url = self.url else { return false }
+        return ["login"].contains((url.host() ?? "").lowercased())
+    }
+    
     var isValidPDFUrl: Bool {
         guard let url = self.url else { return false }
         return [
