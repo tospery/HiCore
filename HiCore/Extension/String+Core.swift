@@ -165,6 +165,11 @@ public extension String {
         return value
     }
     
+    var isValidBackUrl: Bool {
+        guard let url = self.url else { return false }
+        return ["back"].contains((url.host() ?? "").lowercased())
+    }
+    
     var isValidToastUrl: Bool {
         guard let url = self.url else { return false }
         return ["toast"].contains((url.host() ?? "").lowercased())

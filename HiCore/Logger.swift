@@ -79,7 +79,7 @@ extension Logger.Module {
     public static var core: Logger.Module { "core" }
     public static var utils: Logger.Module { "utils" }
     public static var realm: Logger.Module { "realm" }
-    public static var hiUIKit: Logger.Module { "HiUIKit" }
+    public static var hiUIKit: Logger.Module { "HiSwiftUI" }
     public static var hiSwiftUI: Logger.Module { "HiSwiftUI" }
     public static var library: Logger.Module { "library" }
     public static var restful: Logger.Module { "restful" }
