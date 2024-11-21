@@ -23,7 +23,7 @@ extension Bool: BooleanType {
 }
 
 public enum HiRequestMode: Int {
-    case load, refresh, loadMore, update, reload
+    case none, load, refresh, loadMore, update, reload
 }
 
 public protocol ImageSource {
