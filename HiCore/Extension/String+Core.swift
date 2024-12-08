@@ -170,6 +170,13 @@ public extension String {
         return ["back"].contains((url.host() ?? "").lowercased())
     }
     
+    var isValidOpenUrl: Bool {
+        guard let url = self.url else { return false }
+        return [
+            "toast", "alert", "sheet", "popup"
+        ].contains((url.host() ?? "").lowercased())
+    }
+    
     var isValidToastUrl: Bool {
         guard let url = self.url else { return false }
         return ["toast"].contains((url.host() ?? "").lowercased())
