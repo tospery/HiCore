@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import HiBase
 import SwifterSwift
 
 public extension UIApplication {
@@ -18,45 +19,18 @@ public extension UIApplication {
         return UIApplication._inAppStore!
     }
     
-    var team: String {
-        let query = [
-            kSecClass as NSString: kSecClassGenericPassword as NSString,
-            kSecAttrAccount as NSString: "bundleSeedID" as NSString,
-            kSecAttrService as NSString: "" as NSString,
-            kSecReturnAttributes as NSString: kCFBooleanTrue as NSNumber
-        ] as NSDictionary
-        
-        var result: CFTypeRef?
-        var status = Int(SecItemCopyMatching(query, &result))
-        if status == Int(errSecItemNotFound) {
-            status = Int(SecItemAdd(query, &result))
-        }
-        if status == Int(errSecSuccess),
-            let attributes = result as? NSDictionary,
-            let accessGroup = attributes[kSecAttrAccessGroup as NSString] as? NSString,
-            let bundleSeedID = (accessGroup.components(separatedBy: ".") as NSArray).objectEnumerator().nextObject() as? String {
-            return bundleSeedID
-        }
-        
-        return ""
-    }
+    var name: String { Bundle.main.name }
+    var displayName: String? { Bundle.main.displayName }
+    var bundleName: String { Bundle.main.bundleName }
+    var bundleIdentifier: String { Bundle.main.bundleIdentifier }
+    var version: String { Bundle.main.version }
+    var buildNumber: String { Bundle.main.buildNumber }
     
-    var name: String {
-        self.displayName ?? self.bundleName
-    }
+    var team: String { Bundle.main.team }
+    var appScheme: String { Bundle.main.appScheme() ?? "" }
     
-    var displayName: String? {
-        Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String
-    }
-    
-    
-    var bundleName: String {
-        Bundle.main.infoDictionary?[kCFBundleNameKey as String] as! String
-    }
-    
-    var bundleIdentifier: String {
-        Bundle.main.infoDictionary?[kCFBundleIdentifierKey as String] as! String
-    }
+    var baseApiUrl: String { Bundle.main.baseApiUrl }
+    var baseWebUrl: String { Bundle.main.baseWebUrl }
     
     var appIcon: UIImage? {
         guard let info = (Bundle.main.infoDictionary as NSDictionary?) else { return nil }
@@ -65,13 +39,13 @@ public extension UIApplication {
     }
     
     var window: UIWindow {
-        var window: UIWindow?
-        if #available(iOS 13, *) {
-            window = UIApplication.shared.windows.filter { $0.isKeyWindow }.last
-        } else {
-            window = UIApplication.shared.keyWindow
+        if let window1 = self.connectedScenes.compactMap { ($0 as? UIWindowScene)?.keyWindow }.first {
+            return window1
         }
-        return window!
+        if let window2 = self.windows.filter { $0.isKeyWindow }.first {
+            return window2
+        }
+        return .init()
     }
     
     @objc var pageStart: Int { 0 }
