@@ -41,8 +41,36 @@ public extension String {
         return url
     }
     
-    var color: UIColor? {
-        return UIColor(hexString: self)
+    var uiColor: UIColor? {
+        var string = self.removingPrefix("0x").removingPrefix("#")
+        if string.count == 6 {
+            return .init(hexString: self)
+        }
+        if string.count == 8 {
+            var hexString = self.trimmingCharacters(in: .whitespacesAndNewlines)
+            hexString = hexString.removingPrefix("0x").removingPrefix("#")
+            
+            guard hexString.count == 8 else { return nil }
+            
+            let rString = String(hexString.prefix(2))
+            let gString = String(hexString.dropFirst(2).prefix(2))
+            let bString = String(hexString.dropFirst(4).prefix(2))
+            let aString = String(hexString.dropFirst(6).prefix(2))
+            
+            var r: UInt64 = 0, g: UInt64 = 0, b: UInt64 = 0, a: UInt64 = 0
+            Scanner(string: rString).scanHexInt64(&r)
+            Scanner(string: gString).scanHexInt64(&g)
+            Scanner(string: bString).scanHexInt64(&b)
+            Scanner(string: aString).scanHexInt64(&a)
+            
+            return UIColor(
+                red: CGFloat(r) / 255.0,
+                green: CGFloat(g) / 255.0,
+                blue: CGFloat(b) / 255.0,
+                alpha: CGFloat(a) / 255.0
+            )
+        }
+        return nil
     }
     
     var method: String {
