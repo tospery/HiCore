@@ -14,9 +14,9 @@ public extension String {
     
     // MARK: - Properties
     // var localizedString: String { NSLocalizedString(self, bundle: appLanguageBundle ?? .main, comment: "") }
-    var localizedString: String { NSLocalizedString(self, comment: "") }
     
-    var localizedStringKey: LocalizedStringKey { .init(self) }
+    var localizedKey: LocalizedStringKey { .init(self) }
+    var localizedString: String { NSLocalizedString(self, comment: "") }
     
     var chineseLocalizedString: String { NSLocalizedString(self, bundle: Bundle.zhBundle ?? .main, comment: "") }
     var englishLocalizedString: String { NSLocalizedString(self, bundle: Bundle.enBundle ?? .main, comment: "") }
@@ -71,6 +71,10 @@ public extension String {
             )
         }
         return nil
+    }
+    
+    var swiftUIColor: Color? {
+        self.uiColor?.swiftUIColor
     }
     
     var method: String {
