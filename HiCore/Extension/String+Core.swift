@@ -36,7 +36,7 @@ public extension String {
         return url
     }
     
-    var uiColor: UIColor? {
+    var color: UIColor? {
         var string = self.removingPrefix("0x").removingPrefix("#")
         if string.count == 6 {
             return .init(hexString: self)
@@ -69,7 +69,7 @@ public extension String {
     }
     
     var swiftUIColor: Color? {
-        self.uiColor?.swiftUIColor
+        self.color?.swiftUIColor
     }
     
     var method: String {
@@ -268,5 +268,9 @@ public extension String {
         let blue = CGFloat(hashValue & 0x0000FF) / 255.0
         return UIColor(red: red, green: green, blue: blue, alpha: 1.0)
     }
+ 
+    var image: UIImage? { .init(named: self) }
+    
+    var swiftUIImage: SwiftUI.Image? { .init(self) }
     
 }
