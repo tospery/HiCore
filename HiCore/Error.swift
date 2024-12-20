@@ -84,37 +84,37 @@ extension HiError: LocalizedError {
     public var failureReason: String? {
         switch self {
         case .none:
-            return "Error.None.Title".localizedString
+            return "Error.None.Title"
         case .cancel:
-            return "Error.Cancel.Title".localizedString
+            return "Error.Cancel.Title"
         case .unknown:
-            return "Error.Unknown.Title".localizedString
+            return "Error.Unknown.Title"
         case .timeout:
-            return "Error.Timeout.Title".localizedString
+            return "Error.Timeout.Title"
         case .navigation:
-            return "Error.Navigation.Title".localizedString
+            return "Error.Navigation.Title"
         case .dataInvalid:
-            return "Error.DataInvalid.Title".localizedString
+            return "Error.DataInvalid.Title"
         case .listIsEmpty:
-            return "Error.ListIsEmpty.Title".localizedString
+            return "Error.ListIsEmpty.Title"
         case .networkNotConnected:
-            return "Error.Network.NotConnected.Title".localizedString
+            return "Error.Network.NotConnected.Title"
         case .networkNotReachable:
-            return "Error.Network.NotReachable.Title".localizedString
+            return "Error.Network.NotReachable.Title"
         case .userNotLoginedIn:
-            return "Error.User.NotLoginedIn.Title".localizedString
+            return "Error.User.NotLoginedIn.Title"
         case .userLoginExpired:
-            return "Error.User.LoginExpired.Title".localizedString
+            return "Error.User.LoginExpired.Title"
         case let .server(code, _, _):
-            var result = "Error.Server.Title\(code)".localizedString
+            var result = "Error.Server.Title\(code)"
             if result.starts(with: "Error.Server.Title") {
-                result = "Error.Server.Title".localizedString
+                result = "Error.Server.Title"
             }
             return result
         case let .app(code, _, _):
-            var result = "Error.App.Title\(code)".localizedString
+            var result = "Error.App.Title\(code)"
             if result.starts(with: "Error.App.Title") {
-                result = "Error.App.Title".localizedString
+                result = "Error.App.Title"
             }
             return result
         }
@@ -123,37 +123,37 @@ extension HiError: LocalizedError {
     public var errorDescription: String? {
         switch self {
         case .none:
-            return "Error.None.Message".localizedString
+            return "Error.None.Message"
         case .cancel:
-            return "Error.Cancel.Message".localizedString
+            return "Error.Cancel.Message"
         case .unknown:
-            return "Error.Unknown.Message".localizedString
+            return "Error.Unknown.Message"
         case .timeout:
-            return "Error.Timeout.Message".localizedString
+            return "Error.Timeout.Message"
         case .navigation:
-            return "Error.Navigation.Message".localizedString
+            return "Error.Navigation.Message"
         case .dataInvalid:
-            return "Error.DataInvalid.Message".localizedString
+            return "Error.DataInvalid.Message"
         case .listIsEmpty:
-            return "Error.ListIsEmpty.Message".localizedString
+            return "Error.ListIsEmpty.Message"
         case .networkNotConnected:
-            return "Error.Network.NotConnected.Message".localizedString
+            return "Error.Network.NotConnected.Message"
         case .networkNotReachable:
-            return "Error.Network.NotReachable.Message".localizedString
+            return "Error.Network.NotReachable.Message"
         case .userNotLoginedIn:
-            return "Error.User.NotLoginedIn.Message".localizedString
+            return "Error.User.NotLoginedIn.Message"
         case .userLoginExpired:
-            return "Error.User.LoginExpired.Message".localizedString
+            return "Error.User.LoginExpired.Message"
         case let .server(code, message, _):
-            var result = message ?? "Error.Server.Message\(code)".localizedString
+            var result = message ?? "Error.Server.Message\(code)"
             if result.starts(with: "Error.Server.Message") {
-                result = "Error.Server.Message".localizedString
+                result = "Error.Server.Message"
             }
             return result
         case let .app(code, message, _):
-            var result = message ?? "Error.App.Message\(code)".localizedString
+            var result = message ?? "Error.App.Message\(code)"
             if result.starts(with: "Error.App.Message") {
-                result = "Error.App.Message".localizedString
+                result = "Error.App.Message"
             }
             return result
         }
@@ -163,7 +163,7 @@ extension HiError: LocalizedError {
         var suggestion: String?
         switch self {
         case let .app(code, _, _):
-            suggestion = "Error.App.Suggestion\(code)".localizedString
+            suggestion = "Error.App.Suggestion\(code)"
         default:
             break
         }

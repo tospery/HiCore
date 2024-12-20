@@ -13,15 +13,6 @@ import HiBase
 public extension String {
     
     // MARK: - Properties
-    // var localizedString: String { NSLocalizedString(self, bundle: appLanguageBundle ?? .main, comment: "") }
-    
-    var localizedKey: LocalizedStringKey { .init(self) }
-    var localizedString: String { NSLocalizedString(self, comment: "") }
-//    var localizedString: String {
-//        (profileService.value?.localization ?? .english) == .english
-//        ? englishLocalizedString : chineseLocalizedString
-//    }
-    
     var chineseLocalizedString: String { NSLocalizedString(self, bundle: Bundle.zhBundle ?? .main, comment: "") }
     var englishLocalizedString: String { NSLocalizedString(self, bundle: Bundle.enBundle ?? .main, comment: "") }
     
