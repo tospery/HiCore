@@ -219,6 +219,11 @@ public extension String {
         return ["sheet"].contains((url.host() ?? "").lowercased())
     }
     
+    var isValidPopupUrl: Bool {
+        guard let url = self.url else { return false }
+        return ["popup"].contains((url.host() ?? "").lowercased())
+    }
+    
     var isValidLoginUrl: Bool {
         guard let url = self.url else { return false }
         return ["login"].contains((url.host() ?? "").lowercased())
