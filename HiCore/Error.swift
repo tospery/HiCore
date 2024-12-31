@@ -50,8 +50,9 @@ public enum HiError: Error {
     case networkNotReachable
     case userNotLoginedIn   // 对应HTTP的401
     case userLoginExpired   // 将自己服务器的错误码转换为该值
-    case server(Int, String?, [String: Any]?)
     case app(Int, String?, [String: Any]?)
+    case server(Int, String?, [String: Any]?)
+    case nserror(Int, String?, [String: Any]?)
 }
 
 extension HiError: Identifiable {
@@ -73,8 +74,9 @@ extension HiError: CustomNSError {
         case .networkNotReachable: return 8
         case .userNotLoginedIn: return 9
         case .userLoginExpired: return 10
-        case let .server(code, _, _): return code
         case let .app(code, _, _): return code
+        case let .server(code, _, _): return code
+        case let .nserror(code, _, _): return code
         }
     }
 }
@@ -105,18 +107,20 @@ extension HiError: LocalizedError {
             return "Error.User.NotLoginedIn.Title"
         case .userLoginExpired:
             return "Error.User.LoginExpired.Title"
-        case let .server(code, _, _):
-            var result = "Error.Server.Title\(code)"
-            if result.starts(with: "Error.Server.Title") {
-                result = "Error.Server.Title"
-            }
-            return result
         case let .app(code, _, _):
             var result = "Error.App.Title\(code)"
             if result.starts(with: "Error.App.Title") {
                 result = "Error.App.Title"
             }
             return result
+        case let .server(code, _, _):
+            var result = "Error.Server.Title\(code)"
+            if result.starts(with: "Error.Server.Title") {
+                result = "Error.Server.Title"
+            }
+            return result
+        case let .nserror(_, message, _):
+            return message
         }
     }
     /// 详情
@@ -144,18 +148,20 @@ extension HiError: LocalizedError {
             return "Error.User.NotLoginedIn.Message"
         case .userLoginExpired:
             return "Error.User.LoginExpired.Message"
-        case let .server(code, message, _):
-            var result = message ?? "Error.Server.Message\(code)"
-            if result.starts(with: "Error.Server.Message") {
-                result = "Error.Server.Message"
-            }
-            return result
         case let .app(code, message, _):
             var result = message ?? "Error.App.Message\(code)"
             if result.starts(with: "Error.App.Message") {
                 result = "Error.App.Message"
             }
             return result
+        case let .server(code, message, _):
+            var result = message ?? "Error.Server.Message\(code)"
+            if result.starts(with: "Error.Server.Message") {
+                result = "Error.Server.Message"
+            }
+            return result
+        case let .nserror(_, message, _):
+            return message
         }
     }
     /// 重试
@@ -189,7 +195,8 @@ extension HiError: Equatable {
            (.userLoginExpired, .userLoginExpired):
             return true
         case (.server(let left, _, _), .server(let right, _, _)),
-             (.app(let left, _, _), .app(let right, _, _)):
+             (.app(let left, _, _), .app(let right, _, _)),
+            (.nserror(let left, _, _), .nserror(let right, _, _)):
             return left == right
         default: return false
         }
@@ -210,8 +217,9 @@ extension HiError: CustomStringConvertible {
         case .networkNotReachable: return "HiError.networkNotReachable"
         case .userNotLoginedIn: return "HiError.userNotLoginedIn"
         case .userLoginExpired: return "HiError.userLoginExpired"
-        case let .server(code, message, extra): return "HiError.server(\(code), \(message ?? ""), \(extra?.jsonString() ?? "")"
         case let .app(code, message, extra): return "HiError.app(\(code), \(message ?? ""), \(extra?.jsonString() ?? ""))"
+        case let .server(code, message, extra): return "HiError.server(\(code), \(message ?? ""), \(extra?.jsonString() ?? "")"
+        case let .nserror(code, message, extra): return "HiError.nserror(\(code), \(message ?? ""), \(extra?.jsonString() ?? "")"
         }
     }
 }
