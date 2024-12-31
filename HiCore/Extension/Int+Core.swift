@@ -53,7 +53,7 @@ extension UInt32 {
 public extension UInt64 {
     var formatted: String {
         if self == 0 {
-            return "-"
+            return "0"
         }
         if self < 1000 {
             return "\(self)"

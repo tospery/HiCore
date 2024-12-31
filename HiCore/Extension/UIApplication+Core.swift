@@ -27,7 +27,7 @@ public extension UIApplication {
     var buildNumber: String { Bundle.main.buildNumber }
     
     var team: String { Bundle.main.team }
-    var appScheme: String { Bundle.main.appScheme() ?? "" }
+    var urlScheme: String { Bundle.main.urlScheme() ?? "" }
     
     var baseApiUrl: String { Bundle.main.baseApiUrl }
     var baseWebUrl: String { Bundle.main.baseWebUrl }
