@@ -23,19 +23,18 @@ public var appLanguageCodes: [String]? {
 //        NSURLErrorDataNotAllowed(-1020): 网络不可用
 public struct ErrorCode {
     public static let ok                        = 200
-    public static let serverUnableConnect       = -10001
-    public static let serverInternalError       = -10002
-    public static let serverNoResponse          = -10003
-    public static let nserror                   = -20001
-    public static let skerror                   = -20002
-    public static let rxerror                   = -20003
-    public static let aferror                   = -20004
-    public static let moyaError                 = -20005
-    public static let asError                   = -20006
-    public static let kfError                   = -20007
-    public static let appError                  = -30000
-    public static let mapping                   = -40000
-    public static let netError                  = -50000
+//    public static let serverUnableConnect       = -10001
+//    public static let serverInternalError       = -10002
+//    public static let serverNoResponse          = -10003
+//    public static let skerror                   = -20002
+//    public static let rxerror                   = -20003
+//    public static let aferror                   = -20004
+//    public static let moyaError                 = -20005
+//    public static let asError                   = -20006
+//    public static let kfError                   = -20007
+//    public static let appError                  = -30000
+//    public static let mapping                   = -40000
+//    public static let netError                  = -50000
 }
 
 public enum HiError: Error {
@@ -45,14 +44,13 @@ public enum HiError: Error {
     case timeout
     case navigation
     case dataInvalid
-    case listIsEmpty
-    case networkNotConnected
-    case networkNotReachable
-    case userNotLoginedIn   // 对应HTTP的401
-    case userLoginExpired   // 将自己服务器的错误码转换为该值
-    case app(Int, String?, [String: Any]?)
+    case dataIsEmpty
+    case networkNotConnected    // 网络不可用
+    case networkNotReachable    // 服务不可达
+    case userNotLoginedIn       // 对应HTTP的401
+    case userLoginExpired       // 将自己服务器的错误码转换为该值
     case server(Int, String?, [String: Any]?)
-    case nserror(Int, String?, [String: Any]?)
+    case app(String, Int, String?, [String: Any]?)
 }
 
 extension HiError: Identifiable {
@@ -69,14 +67,13 @@ extension HiError: CustomNSError {
         case .timeout: return 3
         case .navigation: return 4
         case .dataInvalid: return 5
-        case .listIsEmpty: return 6
+        case .dataIsEmpty: return 6
         case .networkNotConnected: return 7
         case .networkNotReachable: return 8
         case .userNotLoginedIn: return 9
         case .userLoginExpired: return 10
-        case let .app(code, _, _): return code
         case let .server(code, _, _): return code
-        case let .nserror(code, _, _): return code
+        case let .app(_, code, _, _): return code
         }
     }
 }
@@ -97,7 +94,7 @@ extension HiError: LocalizedError {
             return "Error.Navigation.Title"
         case .dataInvalid:
             return "Error.DataInvalid.Title"
-        case .listIsEmpty:
+        case .dataIsEmpty:
             return "Error.ListIsEmpty.Title"
         case .networkNotConnected:
             return "Error.Network.NotConnected.Title"
@@ -107,20 +104,19 @@ extension HiError: LocalizedError {
             return "Error.User.NotLoginedIn.Title"
         case .userLoginExpired:
             return "Error.User.LoginExpired.Title"
-        case let .app(code, _, _):
-            var result = "Error.App.Title\(code)"
-            if result.starts(with: "Error.App.Title") {
-                result = "Error.App.Title"
-            }
-            return result
         case let .server(code, _, _):
             var result = "Error.Server.Title\(code)"
             if result.starts(with: "Error.Server.Title") {
                 result = "Error.Server.Title"
             }
             return result
-        case let .nserror(_, message, _):
-            return message
+        case let .app(domain, code, _, _):
+            let prefix = "Error.App.\(domain.capitalizedFirstCharacter).Title"
+            var result = "\(prefix)\(code)"
+            if result.starts(with: prefix) {
+                result = prefix
+            }
+            return result
         }
     }
     /// 详情
@@ -138,7 +134,7 @@ extension HiError: LocalizedError {
             return "Error.Navigation.Message"
         case .dataInvalid:
             return "Error.DataInvalid.Message"
-        case .listIsEmpty:
+        case .dataIsEmpty:
             return "Error.ListIsEmpty.Message"
         case .networkNotConnected:
             return "Error.Network.NotConnected.Message"
@@ -148,28 +144,27 @@ extension HiError: LocalizedError {
             return "Error.User.NotLoginedIn.Message"
         case .userLoginExpired:
             return "Error.User.LoginExpired.Message"
-        case let .app(code, message, _):
-            var result = message ?? "Error.App.Message\(code)"
-            if result.starts(with: "Error.App.Message") {
-                result = "Error.App.Message"
-            }
-            return result
         case let .server(code, message, _):
             var result = message ?? "Error.Server.Message\(code)"
             if result.starts(with: "Error.Server.Message") {
                 result = "Error.Server.Message"
             }
             return result
-        case let .nserror(_, message, _):
-            return message
+        case let .app(domain, code, message, _):
+            let prefix = "Error.App.\(domain.capitalizedFirstCharacter).Message"
+            var result = message ?? "\(prefix)\(code)"
+            if result.starts(with: prefix) {
+                result = prefix
+            }
+            return result
         }
     }
     /// 重试
     public var recoverySuggestion: String? {
         var suggestion: String?
         switch self {
-        case let .app(code, _, _):
-            suggestion = "Error.App.Suggestion\(code)"
+        case let .app(domain, code, _, _):
+            suggestion = "Error.App.\(domain).Suggestion\(code)"
         default:
             break
         }
@@ -188,16 +183,16 @@ extension HiError: Equatable {
             (.timeout, .timeout),
              (.navigation, .navigation),
              (.dataInvalid, .dataInvalid),
-             (.listIsEmpty, .listIsEmpty),
+             (.dataIsEmpty, .dataIsEmpty),
             (.networkNotConnected, .networkNotConnected),
             (.networkNotReachable, .networkNotReachable),
             (.userNotLoginedIn, .userNotLoginedIn),
            (.userLoginExpired, .userLoginExpired):
             return true
-        case (.server(let left, _, _), .server(let right, _, _)),
-             (.app(let left, _, _), .app(let right, _, _)),
-            (.nserror(let left, _, _), .nserror(let right, _, _)):
+        case (.server(let left, _, _), .server(let right, _, _)):
             return left == right
+        case (.app(let leftDomain, let leftCode, _, _), .app(let rightDomain, let rightCode, _, _)):
+            return (leftDomain == rightDomain) && (leftCode == rightCode)
         default: return false
         }
     }
@@ -212,14 +207,13 @@ extension HiError: CustomStringConvertible {
         case .timeout: return "HiError.timeout"
         case .navigation: return "HiError.navigation"
         case .dataInvalid: return "HiError.dataInvalid"
-        case .listIsEmpty: return "HiError.listIsEmpty"
+        case .dataIsEmpty: return "HiError.dataIsEmpty"
         case .networkNotConnected: return "HiError.networkNotConnected"
         case .networkNotReachable: return "HiError.networkNotReachable"
         case .userNotLoginedIn: return "HiError.userNotLoginedIn"
         case .userLoginExpired: return "HiError.userLoginExpired"
-        case let .app(code, message, extra): return "HiError.app(\(code), \(message ?? ""), \(extra?.jsonString() ?? ""))"
         case let .server(code, message, extra): return "HiError.server(\(code), \(message ?? ""), \(extra?.jsonString() ?? "")"
-        case let .nserror(code, message, extra): return "HiError.nserror(\(code), \(message ?? ""), \(extra?.jsonString() ?? "")"
+        case let .app(domain, code, message, extra): return "HiError.app.\(domain)(\(code), \(message ?? ""), \(extra?.jsonString() ?? ""))"
         }
     }
 }
@@ -229,21 +223,6 @@ extension HiError {
     public var isNetwork: Bool {
         self == .networkNotConnected || self == .networkNotReachable
     }
-
-//    public var isServer: Bool {
-//        if case .server = self {
-//            return true
-//        }
-//        return false
-//    }
-//
-//    public var isCancel: Bool {
-//        self == .cancel
-//    }
-//
-//    public var isListIsEmpty: Bool {
-//        self == .dataIsEmpty
-//    }
 
     public var isNeedLogin: Bool {
         self == .userNotLoginedIn || self == .userLoginExpired
@@ -256,9 +235,9 @@ extension HiError {
         return false
     }
     
-    public func isAppError(withCode errorCode: Int) -> Bool {
-        if case let .app(code, _, _) = self {
-            return errorCode == code
+    public func isAppError(forDomain errorDomain: String, withCode errorCode: Int) -> Bool {
+        if case let .app(domain, code, _, _) = self {
+            return (errorDomain == domain) && (errorCode == code)
         }
         return false
     }
@@ -292,7 +271,8 @@ extension MappingError: HiErrorCompatible {
     public var hiError: HiError {
         switch self {
         case .unknownType: return .unknown
-        default: return .dataInvalid
+        case .emptyData: return .dataIsEmpty
+        case .invalidJSON: return .dataInvalid
         }
     }
 }
