@@ -119,7 +119,7 @@ extension HiError: LocalizedError {
             return result
         }
     }
-    /// 详情
+    /// 详情（localizedDescription）
     public var errorDescription: String? {
         switch self {
         case .none:
