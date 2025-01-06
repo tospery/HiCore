@@ -200,7 +200,7 @@ public extension String {
     var isValidOpenUrl: Bool {
         guard let url = self.url else { return false }
         return [
-            "toast", "alert", "sheet", "popup"
+            "toast", "alert", "sheet", "popup", "logic"
         ].contains((url.host() ?? "").lowercased())
     }
     
@@ -222,6 +222,11 @@ public extension String {
     var isValidPopupUrl: Bool {
         guard let url = self.url else { return false }
         return ["popup"].contains((url.host() ?? "").lowercased())
+    }
+    
+    var isValidLogicUrl: Bool {
+        guard let url = self.url else { return false }
+        return ["logic"].contains((url.host() ?? "").lowercased())
     }
     
     var isValidLoginUrl: Bool {
