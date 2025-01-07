@@ -71,7 +71,7 @@ public extension Dictionary where Key == String {
         var result = [String: String].init()
         for key in self.keys {
             let value = self[key]!
-            result[key] = String.init(describing: value)
+            result[key] = tryString(value) ?? ""
         }
         return result
     }
