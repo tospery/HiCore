@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'HiCore'
-  s.version          = '1.0.8'
+  s.version          = '1.0.9'
   s.summary          = 'Core module.'
   s.description      = <<-DESC
 						Core module using Swift.
