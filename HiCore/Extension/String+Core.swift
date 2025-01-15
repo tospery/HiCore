@@ -255,12 +255,6 @@ public extension String {
         ].contains(url.pathExtension.lowercased())
     }
     
-    // 错误实现
-//    var isValidDirectoryUrl: Bool {
-//        guard let url = self.url else { return false }
-//        return url.pathExtension.isEmpty
-//    }
-    
     var imageSource: ImageSource? {
         if self.hasPrefix("http") {
             return self.url
