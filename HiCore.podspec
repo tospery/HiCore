@@ -1,9 +1,9 @@
 Pod::Spec.new do |s|
   s.name             = 'HiCore'
-  s.version          = '1.0.11'
-  s.summary          = 'Core module.'
+  s.version          = '1.1.0'
+  s.summary          = 'Core layer.'
   s.description      = <<-DESC
-						Core module using Swift.
+						Core layer using Swift.
                        DESC
   s.homepage         = 'https://github.com/tospery/HiCore'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
