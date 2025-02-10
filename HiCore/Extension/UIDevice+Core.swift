@@ -12,8 +12,16 @@ import DeviceKit
 
 public extension UIDevice {
 
-    var modelName: String {
-        Device.current.safeDescription
+    /// 如 iPhone12,5、iPad6,8
+    var deviceModel: String { Device.identifier }
+    
+    /// 如 iPhone 11 Pro Max、iPad Pro (12.9 inch)，如果是模拟器，会在后面带上“ Simulator”字样。
+    var deviceName: String {
+        let device = Device.current
+        switch device {
+        case .simulator(let model): return "(\(model.safeDescription)) Simulator"
+        default: return device.safeDescription
+        }
     }
     
     var keychain: UICKeyChainStore {

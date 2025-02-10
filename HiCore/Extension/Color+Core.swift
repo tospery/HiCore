@@ -11,7 +11,7 @@ import SwifterSwift
 
 public extension UIColor {
     
-    public var swiftUIColor: SwiftUI.Color {
+    var swiftUIColor: SwiftUI.Color {
         SwiftUI.Color(uiColor: self)
     }
     

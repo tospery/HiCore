@@ -37,7 +37,7 @@ public extension String {
     }
     
     var color: UIColor? {
-        var string = self.removingPrefix("0x").removingPrefix("#")
+        let string = self.removingPrefix("0x").removingPrefix("#")
         if string.count == 6 {
             return .init(hexString: self)
         }

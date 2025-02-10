@@ -54,13 +54,16 @@ public var deviceWidth: CGFloat { min(UIScreen.main.bounds.size.width, UIScreen.
 public var deviceHeight: CGFloat { max(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height) }
 
 /// 带物理凹槽的刘海屏或者使用 Home Indicator 类型的设备
-/// @NEW_DEVICE_CHECKER
 public var isNotchedScreen: Bool { Device.current.hasSensorHousing }
 
 /// 将屏幕分为普通和紧凑两种，这个方法用于判断普通屏幕（也即大屏幕）。
-/// @note 注意，这里普通/紧凑的标准是 QMUI 自行制定的，与系统 UITraitCollection.horizontalSizeClass/verticalSizeClass 的值无关。只要是通常意义上的“大屏幕手机”（例如 Plus 系列）都会被视为 Regular Screen。
+/// @note 注意，这里普通/紧凑的标准是HiCore自行制定的，与系统 UITraitCollection.horizontalSizeClass/verticalSizeClass 的值无关。只要是通常意义上的“大屏幕手机”（例如 Plus 系列）都会被视为 Regular Screen。
 /// @NEW_DEVICE_CHECKER
 public var isRegularScreen: Bool {
+    if ["iPhone 14 Pro", "iPhone 15", "iPhone 16"]
+        .first(where: { UIDevice.current.deviceName.hasPrefix($0) }) != nil {
+        return true
+    }
     if isPad {
         return true
     }
@@ -79,6 +82,18 @@ public var isMiddleScreen: Bool { deviceWidth > 320 && deviceWidth < 414 }
 public var isLargeScreen: Bool { deviceWidth >= 414 }
 /// 是否放大模式（iPhone 6及以上的设备支持放大模式，iPhone X 除外）
 public var isZoomMode: Bool { Device.current.isZoomed ?? false }
+/// 当前设备是否拥有灵动岛
+/// @NEW_DEVICE_CHECKER
+public var isDynamicIsland: Bool {
+    if !isPhone {
+        return false
+    }
+    if ["iPhone 14 Pro", "iPhone 15", "iPhone 16"]
+        .first(where: { UIDevice.current.deviceName.hasPrefix($0) }) != nil {
+        return true
+    }
+    return false
+}
 
 // MARK: 布局常量
 /// 获取一个像素
@@ -106,18 +121,10 @@ public var statusBarHeight: CGFloat {
 /// 状态栏高度(如果状态栏不可见，也会返回一个普通状态下可见的高度)
 /// @NEW_DEVICE_CHECKER
 public var statusBarHeightConstant: CGFloat {
-    let deviceModel = UIDevice.current.modelName
+    let deviceModel = UIDevice.current.deviceName
     if !UIApplication.shared.isStatusBarHidden {
-#if IOS16_SDK_ALLOWED
-#else
-        // Xcode 14 SDK 编译的才能在 iPhone 14 Pro 上读取到正确的值，否则会读到 iPhone 13 Pro 的值，过渡期间做个兼容
-        if !isLandscape && (deviceModel == "iPhone15,2" || deviceModel == "iPhone15,3") {
-            return 54
-        }
-#endif
         return UIApplication.shared.statusBarFrame.size.height
     }
-    
     if isPad {
         return isNotchedScreen ? 24 : 20
     }
@@ -128,9 +135,11 @@ public var statusBarHeightConstant: CGFloat {
         return 0
     }
     if deviceModel == "iPhone12,1" {
-        return 48
+        // iPhone 13 Mini
+        return 48;
     }
-    if deviceModel == "iPhone15,2" || deviceModel == "iPhone15,3" {
+    if ["iPhone 14 Pro", "iPhone 15", "iPhone 16"]
+        .first(where: { UIDevice.current.deviceName.hasPrefix($0) }) != nil {
         return 54
     }
     let diagonal = Device.current.diagonal
@@ -181,6 +190,62 @@ public var safeArea: UIEdgeInsets {
     
     if safeAreaInfo == nil {
         safeAreaInfo = [
+            // iPhone 16 Pro
+            "iPhone17,1": [
+                .portrait: .init(top: 62, left: 0, bottom: 34, right: 0),
+                .landscapeLeft: .init(top: 0, left: 62, bottom: 21, right: 62)
+            ],
+            // iPhone 16 Pro Max
+            "iPhone17,2": [
+                .portrait: .init(top: 62, left: 0, bottom: 34, right: 0),
+                .landscapeLeft: .init(top: 0, left: 62, bottom: 21, right: 62)
+            ],
+            // iPhone 16
+            "iPhone17,3": [
+                .portrait: .init(top: 59, left: 0, bottom: 34, right: 0),
+                .landscapeLeft: .init(top: 0, left: 59, bottom: 21, right: 59)
+            ],
+            // iPhone 16 Plus
+            "iPhone17,4": [
+                .portrait: .init(top: 59, left: 0, bottom: 34, right: 0),
+                .landscapeLeft: .init(top: 0, left: 59, bottom: 21, right: 59)
+            ],
+            // iPhone 15
+            "iPhone15,4": [
+                .portrait: .init(top: 47, left: 0, bottom: 34, right: 0),
+                .landscapeLeft: .init(top: 0, left: 47, bottom: 21, right: 47)
+            ],
+            "iPhone15,4-Zoom": [
+                .portrait: .init(top: 48, left: 0, bottom: 28, right: 0),
+                .landscapeLeft: .init(top: 0, left: 48, bottom: 21, right: 48)
+            ],
+            // iPhone 15 Plus
+            "iPhone15,5": [
+                .portrait: .init(top: 47, left: 0, bottom: 34, right: 0),
+                .landscapeLeft: .init(top: 0, left: 47, bottom: 21, right: 47)
+            ],
+            "iPhone15,5-Zoom": [
+                .portrait: .init(top: 41, left: 0, bottom: 30, right: 0),
+                .landscapeLeft: .init(top: 0, left: 41, bottom: 21, right: 41)
+            ],
+            // iPhone 15 Pro
+            "iPhone16,1": [
+                .portrait: .init(top: 59, left: 0, bottom: 34, right: 0),
+                .landscapeLeft: .init(top: 0, left: 59, bottom: 21, right: 59)
+            ],
+            "iPhone16,1-Zoom": [
+                .portrait: .init(top: 48, left: 0, bottom: 28, right: 0),
+                .landscapeLeft: .init(top: 0, left: 48, bottom: 21, right: 48)
+            ],
+            // iPhone 15 Pro Max
+            "iPhone16,2": [
+                .portrait: .init(top: 59, left: 0, bottom: 34, right: 0),
+                .landscapeLeft: .init(top: 0, left: 59, bottom: 21, right: 59)
+            ],
+            "iPhone16,2-Zoom": [
+                .portrait: .init(top: 51, left: 0, bottom: 31, right: 0),
+                .landscapeLeft: .init(top: 0, left: 51, bottom: 21, right: 51)
+            ],
             // iPhone 14
             "iPhone14,7": [
                 .portrait: .init(top: 47, left: 0, bottom: 34, right: 0),

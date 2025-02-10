@@ -54,11 +54,11 @@ public func compareAny(_ left: Any?, _ right: Any?) -> Bool {
     if type(of: left) != type(of: right) {
         return false
     }
-    if Mirror(reflecting: left).displayStyle != Mirror(reflecting: right).displayStyle {
+    if Mirror(reflecting: left!).displayStyle != Mirror(reflecting: right!).displayStyle {
         return false
     }
-    if let leftEquatable = toAnyEquatable(left),
-       let rightEquatable = toAnyEquatable(right) {
+    if let leftEquatable = toAnyEquatable(left!),
+       let rightEquatable = toAnyEquatable(right!) {
         return leftEquatable.isEqual(to: rightEquatable)
     }
     let leftString = tryString(left) ?? ""
