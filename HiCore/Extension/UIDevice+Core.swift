@@ -19,7 +19,7 @@ public extension UIDevice {
     var deviceName: String {
         let device = Device.current
         switch device {
-        case .simulator(let model): return "(\(model.safeDescription)) Simulator"
+        case .simulator(let model): return "\(model.safeDescription) Simulator"
         default: return device.safeDescription
         }
     }
