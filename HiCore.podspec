@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'HiCore'
-  s.version          = '1.2.0'
+  s.version          = '1.2.1'
   s.summary          = 'Core layer.'
   s.description      = <<-DESC
 						Core layer using Swift.
@@ -12,7 +12,7 @@ Pod::Spec.new do |s|
 
   s.requires_arc = true
   s.swift_version = '5.3'
-  s.ios.deployment_target = '16.0'
+  s.platform = :ios, '16.0'
   s.frameworks = 'Foundation', 'CoreGraphics', 'UIKit'
   
   s.source_files = 'HiCore/**/*'
