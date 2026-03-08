@@ -41,7 +41,15 @@ public var isSimulator: Bool { Device.current.isSimulator }
 /// 操作系统版本号，只获取第二级的版本号，例如 10.3.1 只会得到 10.3
 public var iOSVersion: Double { (UIDevice.current.systemVersion as NSString).doubleValue }
 /// 是否横竖屏，用户界面横屏了才会返回YES
-public var isLandscape: Bool { UIApplication.shared.statusBarOrientation.isLandscape }
+// public var isLandscape: Bool { UIApplication.shared.statusBarOrientation.isLandscape }
+public var isLandscape: Bool {
+    guard let windowScene = UIApplication.shared
+        .connectedScenes
+        .compactMap({ $0 as? UIWindowScene })
+        .first(where: { $0.activationState == .foregroundActive })
+    else { return false }
+    return windowScene.interfaceOrientation.isLandscape
+}
 /// 无论支不支持横屏，只要设备横屏了，就会返回YES
 public var isDeviceLandscape: Bool { UIDevice.current.orientation.isLandscape }
 /// 屏幕宽度，会根据横竖屏的变化而变化
@@ -114,16 +122,29 @@ public var screenScale: CGFloat { UIScreen.main.scale }
 public var screenNativeScale: CGFloat { UIScreen.main.nativeScale }
 
 /// 状态栏高度(来电等情况下，状态栏高度会发生变化，所以应该实时计算，iOS 13 起，来电等情况下状态栏高度不会改变)
+//public var statusBarHeight: CGFloat {
+//    (UIApplication.shared.isStatusBarHidden ? 0 : UIApplication.shared.statusBarFrame.size.height)
+//}
 public var statusBarHeight: CGFloat {
-    (UIApplication.shared.isStatusBarHidden ? 0 : UIApplication.shared.statusBarFrame.size.height)
+    let scene = UIApplication.shared.connectedScenes
+        .compactMap { $0 as? UIWindowScene }
+        .first(where: { $0.activationState == .foregroundActive })
+    return scene?.statusBarManager?.statusBarFrame.height ?? 0
 }
 
 /// 状态栏高度(如果状态栏不可见，也会返回一个普通状态下可见的高度)
 /// @NEW_DEVICE_CHECKER
 public var statusBarHeightConstant: CGFloat {
     let deviceModel = UIDevice.current.deviceName
-    if !UIApplication.shared.isStatusBarHidden {
-        return UIApplication.shared.statusBarFrame.size.height
+//    if !UIApplication.shared.isStatusBarHidden {
+//        return UIApplication.shared.statusBarFrame.size.height
+//    }
+    if let scene = UIApplication.shared.connectedScenes
+        .compactMap({ $0 as? UIWindowScene })
+        .first(where: { $0.activationState == .foregroundActive }),
+       let statusBarManager = scene.statusBarManager,
+       !statusBarManager.isStatusBarHidden {
+        return statusBarManager.statusBarFrame.height
     }
     if isPad {
         return isNotchedScreen ? 24 : 20
@@ -384,20 +405,39 @@ public var safeArea: UIEdgeInsets {
     }
     
     var orientationKey: UIInterfaceOrientation = .portrait
-    let orientation = UIApplication.shared.statusBarOrientation
-    switch orientation {
-    case .landscapeLeft, .landscapeRight:
-        orientationKey = .landscapeLeft
-    default:
-        break
-    }
+//    let orientation = UIApplication.shared.statusBarOrientation
+//    switch orientation {
+//    case .landscapeLeft, .landscapeRight:
+//        orientationKey = .landscapeLeft
+//    default:
+//        break
+//    }
     
     var insets = safeAreaInfo![deviceKey]![orientationKey]!
-    if orientation == .portraitUpsideDown {
-        insets = .init(top: insets.bottom, left: insets.left, bottom: insets.top, right: insets.right)
-    } else if orientation == .landscapeRight {
-        insets = .init(top: insets.top, left: insets.right, bottom: insets.bottom, right: insets.left)
+    if let scene = UIApplication.shared.connectedScenes
+        .compactMap({ $0 as? UIWindowScene })
+        .first(where: { $0.activationState == .foregroundActive }) {
+        let orientation = scene.interfaceOrientation
+        switch orientation {
+        case .landscapeLeft, .landscapeRight:
+            orientationKey = .landscapeLeft
+            insets = safeAreaInfo![deviceKey]![orientationKey]!
+        default:
+            break
+        }
+        if orientation == .portraitUpsideDown {
+            insets = .init(top: insets.bottom, left: insets.left, bottom: insets.top, right: insets.right)
+        } else if orientation == .landscapeRight {
+            insets = .init(top: insets.top, left: insets.right, bottom: insets.bottom, right: insets.left)
+        }
     }
+    
+//    var insets = safeAreaInfo![deviceKey]![orientationKey]!
+//    if orientation == .portraitUpsideDown {
+//        insets = .init(top: insets.bottom, left: insets.left, bottom: insets.top, right: insets.right)
+//    } else if orientation == .landscapeRight {
+//        insets = .init(top: insets.top, left: insets.right, bottom: insets.bottom, right: insets.left)
+//    }
     return insets
 }
 private var safeAreaInfo: [String : [UIInterfaceOrientation : UIEdgeInsets]]?
