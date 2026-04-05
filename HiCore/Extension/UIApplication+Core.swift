@@ -29,9 +29,9 @@ public extension UIApplication {
     var team: String { Bundle.main.team }
     var urlScheme: String { Bundle.main.urlScheme() ?? "" }
     
-    var baseApiUrl: String { Bundle.main.baseApiUrl }
-    var baseWebUrl: String { Bundle.main.baseWebUrl }
-    var baseUnivLink: String { Bundle.main.baseUnivLink }
+//    var baseApiUrl: String { Bundle.main.baseApiUrl }
+//    var baseWebUrl: String { Bundle.main.baseWebUrl }
+//    var baseUnivLink: String { Bundle.main.baseUnivLink }
     
     var appIcon: UIImage? {
         guard let info = (Bundle.main.infoDictionary as NSDictionary?) else { return nil }
