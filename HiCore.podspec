@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'HiCore'
-  s.version          = '1.2.2'
+  s.version          = '1.2.3'
   s.summary          = 'Core layer.'
   s.description      = <<-DESC
 						Core layer using Swift.
@@ -22,5 +22,4 @@ Pod::Spec.new do |s|
   s.dependency 'HiLog/Core', '~> 1.0'
   s.dependency 'SwifterSwift/UIKit', '~> 8.0'
   s.dependency 'SwifterSwift/CoreGraphics', '~> 8.0'
-  
 end
