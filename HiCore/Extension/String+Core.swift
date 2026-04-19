@@ -12,9 +12,9 @@ import HiBase
 
 public extension String {
     
-    // MARK: - Properties
-    var chineseLocalizedString: String { NSLocalizedString(self, bundle: Bundle.zhBundle ?? .main, comment: "") }
-    var englishLocalizedString: String { NSLocalizedString(self, bundle: Bundle.enBundle ?? .main, comment: "") }
+//    // MARK: - Properties
+//    var chineseLocalizedString: String { NSLocalizedString(self, bundle: Bundle.zhBundle ?? .main, comment: "") }
+//    var englishLocalizedString: String { NSLocalizedString(self, bundle: Bundle.enBundle ?? .main, comment: "") }
     
     var capitalizedFirstCharacter: String {
         guard let first = first else { return self }

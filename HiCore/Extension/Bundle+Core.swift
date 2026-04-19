@@ -14,14 +14,14 @@ public extension Bundle {
         self.init(identifier: "org.cocoapods." + module)
     }
     
-    static var enBundle: Bundle? {
-        guard let path = Bundle.main.path(forResource: Localization.english.rawValue, ofType: "lproj") else { return nil }
-        return .init(path: path)
-    }
-    
-    static var zhBundle: Bundle? {
-        guard let path = Bundle.main.path(forResource: Localization.chinese.rawValue, ofType: "lproj") else { return nil }
-        return .init(path: path)
-    }
+//    static var enBundle: Bundle? {
+//        guard let path = Bundle.main.path(forResource: Localization.english.rawValue, ofType: "lproj") else { return nil }
+//        return .init(path: path)
+//    }
+//    
+//    static var zhBundle: Bundle? {
+//        guard let path = Bundle.main.path(forResource: Localization.chinese.rawValue, ofType: "lproj") else { return nil }
+//        return .init(path: path)
+//    }
     
 }

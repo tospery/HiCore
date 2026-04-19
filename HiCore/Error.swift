@@ -6,35 +6,10 @@
 //
 
 import Foundation
+import SwifterSwift
 
-var appLanguageBundle: Bundle?
-public var appLanguageCodes: [String]? {
-    didSet {
-        if let code = appLanguageCodes?.first,
-           let path = Bundle.main.path(forResource: code, ofType: "lproj"),
-           let bundle = Bundle(path: path) {
-            appLanguageBundle = bundle
-        }
-    }
-}
-
-//        NSURLErrorTimedOut(-1001): 请求超时
-//        NSURLErrorCannotConnectToHost(-1004): 找不到服务
-//        NSURLErrorDataNotAllowed(-1020): 网络不可用
 public struct ErrorCode {
     public static let ok                        = 200
-//    public static let serverUnableConnect       = -10001
-//    public static let serverInternalError       = -10002
-//    public static let serverNoResponse          = -10003
-//    public static let skerror                   = -20002
-//    public static let rxerror                   = -20003
-//    public static let aferror                   = -20004
-//    public static let moyaError                 = -20005
-//    public static let asError                   = -20006
-//    public static let kfError                   = -20007
-//    public static let appError                  = -30000
-//    public static let mapping                   = -40000
-//    public static let netError                  = -50000
 }
 
 public enum HiError: Error {
@@ -81,83 +56,87 @@ extension HiError: CustomNSError {
 extension HiError: LocalizedError {
     /// 概述
     public var failureReason: String? {
+        var reason: String?
         switch self {
         case .none:
-            return "Error.None.Title"
+            reason = "Error.None.Title"
         case .cancel:
-            return "Error.Cancel.Title"
+            reason = "Error.Cancel.Title"
         case .unknown:
-            return "Error.Unknown.Title"
+            reason = "Error.Unknown.Title"
         case .timeout:
-            return "Error.Timeout.Title"
+            reason = "Error.Timeout.Title"
         case .navigation:
-            return "Error.Navigation.Title"
+            reason = "Error.Navigation.Title"
         case .dataInvalid:
-            return "Error.DataInvalid.Title"
+            reason = "Error.DataInvalid.Title"
         case .dataIsEmpty:
-            return "Error.ListIsEmpty.Title"
+            reason = "Error.ListIsEmpty.Title"
         case .networkNotConnected:
-            return "Error.Network.NotConnected.Title"
+            reason = "Error.Network.NotConnected.Title"
         case .networkNotReachable:
-            return "Error.Network.NotReachable.Title"
+            reason = "Error.Network.NotReachable.Title"
         case .userNotLoginedIn:
-            return "Error.User.NotLoginedIn.Title"
+            reason = "Error.User.NotLoginedIn.Title"
         case .userLoginExpired:
-            return "Error.User.LoginExpired.Title"
+            reason = "Error.User.LoginExpired.Title"
         case let .server(code, _, _):
             var result = "Error.Server.Title\(code)"
             if result.starts(with: "Error.Server.Title") {
                 result = "Error.Server.Title"
             }
-            return result
+            reason = result
         case let .app(domain, code, _, _):
             let prefix = "Error.App.\(domain.capitalizedFirstCharacter).Title"
             var result = "\(prefix)\(code)"
             if result.starts(with: prefix) {
                 result = prefix
             }
-            return result
+            reason = result
         }
+        return reason?.localized()
     }
     /// 详情（localizedDescription）
     public var errorDescription: String? {
+        var desc: String?
         switch self {
         case .none:
-            return "Error.None.Message"
+            desc = "Error.None.Message"
         case .cancel:
-            return "Error.Cancel.Message"
+            desc = "Error.Cancel.Message"
         case .unknown:
-            return "Error.Unknown.Message"
+            desc = "Error.Unknown.Message"
         case .timeout:
-            return "Error.Timeout.Message"
+            desc = "Error.Timeout.Message"
         case .navigation:
-            return "Error.Navigation.Message"
+            desc = "Error.Navigation.Message"
         case .dataInvalid:
-            return "Error.DataInvalid.Message"
+            desc = "Error.DataInvalid.Message"
         case .dataIsEmpty:
-            return "Error.ListIsEmpty.Message"
+            desc = "Error.ListIsEmpty.Message"
         case .networkNotConnected:
-            return "Error.Network.NotConnected.Message"
+            desc = "Error.Network.NotConnected.Message"
         case .networkNotReachable:
-            return "Error.Network.NotReachable.Message"
+            desc = "Error.Network.NotReachable.Message"
         case .userNotLoginedIn:
-            return "Error.User.NotLoginedIn.Message"
+            desc = "Error.User.NotLoginedIn.Message"
         case .userLoginExpired:
-            return "Error.User.LoginExpired.Message"
+            desc = "Error.User.LoginExpired.Message"
         case let .server(code, message, _):
             var result = message ?? "Error.Server.Message\(code)"
             if result.starts(with: "Error.Server.Message") {
                 result = "Error.Server.Message"
             }
-            return result
+            desc = result
         case let .app(domain, code, message, _):
             let prefix = "Error.App.\(domain.capitalizedFirstCharacter).Message"
             var result = message ?? "\(prefix)\(code)"
             if result.starts(with: prefix) {
                 result = prefix
             }
-            return result
+            desc = result
         }
+        return desc?.localized()
     }
     /// 重试
     public var recoverySuggestion: String? {
@@ -171,7 +150,7 @@ extension HiError: LocalizedError {
         if suggestion?.hasPrefix("Error.") ?? false {
             suggestion = nil
         }
-        return suggestion
+        return suggestion?.localized()
     }
 }
 
@@ -200,21 +179,23 @@ extension HiError: Equatable {
 
 extension HiError: CustomStringConvertible {
     public var description: String {
+        var desc: String?
         switch self {
-        case .none: return "HiError.none"
-        case .cancel: return "HiError.cancel"
-        case .unknown: return "HiError.unknown"
-        case .timeout: return "HiError.timeout"
-        case .navigation: return "HiError.navigation"
-        case .dataInvalid: return "HiError.dataInvalid"
-        case .dataIsEmpty: return "HiError.dataIsEmpty"
-        case .networkNotConnected: return "HiError.networkNotConnected"
-        case .networkNotReachable: return "HiError.networkNotReachable"
-        case .userNotLoginedIn: return "HiError.userNotLoginedIn"
-        case .userLoginExpired: return "HiError.userLoginExpired"
-        case let .server(code, message, extra): return "HiError.server(\(code), \(message ?? ""), \(extra?.jsonString() ?? "")"
-        case let .app(domain, code, message, extra): return "HiError.app.\(domain)(\(code), \(message ?? ""), \(extra?.jsonString() ?? ""))"
+        case .none: desc = "HiError.none"
+        case .cancel: desc = "HiError.cancel"
+        case .unknown: desc = "HiError.unknown"
+        case .timeout: desc = "HiError.timeout"
+        case .navigation: desc = "HiError.navigation"
+        case .dataInvalid: desc = "HiError.dataInvalid"
+        case .dataIsEmpty: desc = "HiError.dataIsEmpty"
+        case .networkNotConnected: desc = "HiError.networkNotConnected"
+        case .networkNotReachable: desc = "HiError.networkNotReachable"
+        case .userNotLoginedIn: desc = "HiError.userNotLoginedIn"
+        case .userLoginExpired: desc = "HiError.userLoginExpired"
+        case let .server(code, message, extra): desc = "HiError.server(\(code), \(message ?? ""), \(extra?.jsonString() ?? "")"
+        case let .app(domain, code, message, extra): desc = "HiError.app.\(domain)(\(code), \(message ?? ""), \(extra?.jsonString() ?? ""))"
         }
+        return desc?.localized() ?? ""
     }
 }
 
