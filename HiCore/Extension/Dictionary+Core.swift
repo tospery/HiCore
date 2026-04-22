@@ -7,7 +7,7 @@
 
 import Foundation
 import SwifterSwift
-import ObjectMapper
+import HiMapper
 import HiBase
 
 public extension Dictionary where Key == String {

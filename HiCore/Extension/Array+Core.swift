@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import ObjectMapper
+import HiMapper
 
 // ******************************* MARK: - Array - Generics
 public extension Array {
