@@ -55,8 +55,4 @@ public extension UIApplication {
         return .init()
     }
     
-    @objc var pageStart: Int { 0 }
-    
-    @objc var pageSize: Int { 20 }
-    
 }
