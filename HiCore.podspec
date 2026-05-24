@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'HiCore'
-  s.version          = '1.2.3'
+  s.version          = '1.2.4'
   s.summary          = 'Core layer.'
   s.description      = <<-DESC
 						Core layer using Swift.
